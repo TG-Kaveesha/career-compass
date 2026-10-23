@@ -4,13 +4,15 @@ import { COURSE_LABEL, REPO_URL } from "../config";
 import { useAuth } from "../context/AuthContext";
 
 const FEATURES = [
-  { title: "Skill Gap Analysis", text: "Compare your skills with real role requirements.", bg: "#e5e0fb", fg: "#2a2a7c" },
-  { title: "Interactive Milestone Boards", text: "Plan, start and finish learning tasks on a board.", bg: "#cdf3ee", fg: "#064e4a" },
-  { title: "Resource Bookmarks", text: "Save videos, articles and docs against each skill.", bg: "#fee9a9", fg: "#5c3d00" },
-  { title: "Analytics & Readiness Score", text: "Watch one score rise as you close gaps.", bg: "#ffd7e3", fg: "#8a1640" },
+  { title: "Skill Gap Analysis", text: "Compare your skills with real role requirements.", bg: "#EADCCB", fg: "#5C4033" },
+  { title: "Interactive Milestone Boards", text: "Plan, start and finish learning tasks on a board.", bg: "#D9C2A8", fg: "#3E2C23" },
+  { title: "Resource Bookmarks", text: "Save videos, articles and docs against each skill.", bg: "#F0E2D0", fg: "#5C4033" },
+  { title: "Analytics & Readiness Score", text: "Watch one score rise as you close gaps.", bg: "#E3CFB8", fg: "#3E2C23" },
 ];
 
 export default function Landing() {
+  const HERO_IMAGES = ["/hero1.jpg", "/hero2.jpg", "/hero3.jpg"];
+  const SLIDE_SECONDS = 2;
   const { user } = useAuth();
   const start = user ? "/dashboard" : "/auth";
 
@@ -27,6 +29,19 @@ export default function Landing() {
       </header>
 
       <section className="hero">
+        <div className="hero-slides" aria-hidden="true">
+            {HERO_IMAGES.map((src, i) => (
+              <div
+                key={src}
+                className="hero-slide"
+                style={{
+                  backgroundImage: `url(${src})`,
+                  animationDuration: `${HERO_IMAGES.length * SLIDE_SECONDS}s`,
+                  animationDelay: `${i * SLIDE_SECONDS}s`,
+                }}
+              />
+           ))}
+        </div>
         <h1>Map Your Path to Your Dream Tech Role</h1>
         <p>Rate your skills, see exactly what is missing for your target role, and follow milestones until you are ready.</p>
         <Link to={start} className="btn btn-amber btn-lg">Start Skill Assessment</Link>

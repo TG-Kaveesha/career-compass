@@ -37,9 +37,9 @@ export default function Dashboard() {
             <section className="card readiness">
               <div className="donut">
                 <svg viewBox="0 0 140 140" width="140" height="140" role="img" aria-label={`${data.readiness}% ready`}>
-                  <circle cx="70" cy="70" r={RADIUS} fill="none" stroke="#e5e0fb" strokeWidth="16" />
+                  <circle cx="70" cy="70" r={RADIUS} fill="none" stroke="#EADCCB" strokeWidth="16" />
                   <circle
-                    cx="70" cy="70" r={RADIUS} fill="none" stroke="#5b3fe0" strokeWidth="16" strokeLinecap="round"
+                    cx="70" cy="70" r={RADIUS} fill="none" stroke="#5C4033" strokeWidth="16" strokeLinecap="round"
                     strokeDasharray={`${(data.readiness / 100) * CIRC} ${CIRC}`} transform="rotate(-90 70 70)"
                   />
                 </svg>
