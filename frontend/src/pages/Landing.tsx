@@ -12,7 +12,7 @@ const FEATURES = [
 
 export default function Landing() {
   const HERO_IMAGES = ["/hero1.jpg", "/hero2.jpg", "/hero3.jpg"];
-  const SLIDE_SECONDS = 2;
+  const SLIDE_SECONDS = 4;
   const { user } = useAuth();
   const start = user ? "/dashboard" : "/auth";
 

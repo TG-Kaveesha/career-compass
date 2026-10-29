@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Auth from "./pages/Auth";
@@ -8,6 +8,7 @@ import Milestones from "./pages/Milestones";
 import Profile from "./pages/Profile";
 import Resources from "./pages/Resources";
 import SkillGap from "./pages/SkillGap";
+import NotFound from "./pages/NotFound";
 
 export default function App() {
   return (
@@ -23,7 +24,7 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
         </Route>
       </Route>
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

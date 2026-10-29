@@ -5,13 +5,16 @@ import './index.css'
 import App from './App';
 import { ToastProvider } from "./components/Toast";
 import { AuthProvider } from "./context/AuthContext";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
       <ToastProvider>
         <AuthProvider>
-          <App />
+          <ErrorBoundary>
+              <App />
+          </ErrorBoundary>
         </AuthProvider>
     </ToastProvider>
     </BrowserRouter>

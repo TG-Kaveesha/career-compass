@@ -4,7 +4,7 @@ import Field from "../components/Field";
 import { PageHeader } from "../components/Layout";
 import Modal, { ConfirmDialog } from "../components/Modal";
 import { useToast } from "../components/Toast";
-import { tagClass } from "../lib/format";
+import { formatDate,tagClass } from "../lib/format";
 import type { Resource, ResourceType } from "../types";
 
 const TYPES: { value: ResourceType | "all"; label: string }[] = [
@@ -33,6 +33,7 @@ export default function Resources() {
   const [sort, setSort] = useState("newest");
   const [editing, setEditing] = useState<Resource | "new" | null>(null);
   const [deleting, setDeleting] = useState<Resource | null>(null);
+  const [viewing, setViewing] = useState<Resource | null>(null);
   const [form, setForm] = useState<FormState>(EMPTY);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
@@ -101,6 +102,15 @@ export default function Resources() {
     }
   }
 
+  async function view(id: string) {
+    try {
+      const { data } = await api.get<Resource>(`/resources/${id}`);
+      setViewing(data);
+    } catch (err) {
+      notify("error", parseError(err).message);
+    }
+  }
+
   return (
     <>
       <PageHeader title="Resource Hub" subtitle="Your saved learning links." />
@@ -135,6 +145,7 @@ export default function Resources() {
               <p className="meta">{host(r.url)} · {TYPE_LABEL[r.type]}</p>
               <div className="actions">
                 <a className="btn btn-sm" href={r.url} target="_blank" rel="noopener noreferrer">Open link</a>
+                <button className="btn btn-ghost btn-sm" onClick={() => view(r.id)}>View</button>
                 <button className="btn btn-ghost btn-sm" onClick={() => openForm(r)}>Edit</button>
                 <button className="btn btn-outline btn-sm" onClick={() => setDeleting(r)}>Delete</button>
               </div>
@@ -165,6 +176,22 @@ export default function Resources() {
               <button className="btn" disabled={busy}>{busy ? "Saving…" : "Save resource"}</button>
             </div>
           </form>
+        </Modal>
+      )}
+
+
+      {viewing && (
+        <Modal title="Resource details" onClose={() => setViewing(null)}>
+          <dl className="details">
+            <dt>Title</dt><dd>{viewing.title}</dd>
+            <dt>Type</dt><dd>{TYPE_LABEL[viewing.type]}</dd>
+            <dt>Skill tag</dt><dd>{viewing.skillTag || "None"}</dd>
+            <dt>Link</dt><dd><a href={viewing.url} target="_blank" rel="noopener noreferrer">{viewing.url}</a></dd>
+            <dt>Added</dt><dd>{viewing.createdAt ? formatDate(viewing.createdAt) : "-"}</dd>
+          </dl>
+          <div className="modal-actions">
+            <button className="btn btn-ghost" onClick={() => setViewing(null)}>Close</button>
+          </div>
         </Modal>
       )}
 

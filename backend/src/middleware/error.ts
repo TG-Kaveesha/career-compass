@@ -12,6 +12,9 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
   if (err?.code === 11000) {
     return res.status(409).json({ message: "That value already exists" });
   }
+  if (err?.type === "entity.parse.failed") {
+    return res.status(400).json({ message: "Invalid JSON in request body" });
+  }
   if (err?.name === "CastError" || err?.name === "ValidationError") {
     return res.status(400).json({ message: "Invalid data supplied" });
   }

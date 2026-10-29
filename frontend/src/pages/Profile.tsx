@@ -74,7 +74,8 @@ export default function Profile() {
     }
   }
 
-  async function removeSkill(id: string) {
+  async function removeSkill(id: string, name: string) {
+    if (!window.confirm(`Remove "${name}" from your custom skills?`)) return;
     try {
       const { data } = await api.delete<{ customSkills: CustomSkill[] }>(`/profile/custom-skills/${id}`);
       setSkills(data.customSkills);
@@ -143,7 +144,7 @@ export default function Profile() {
               {skills.map((s) => (
                 <span key={s.id} className={`${tagClass(s.name)} skill-chip`}>
                   {s.name}
-                  <button aria-label={`Remove ${s.name}`} onClick={() => removeSkill(s.id)}>×</button>
+                  <button aria-label={`Remove ${s.name}`} onClick={() => removeSkill(s.id,s.name)}>×</button>
                 </span>
               ))}
             </div>

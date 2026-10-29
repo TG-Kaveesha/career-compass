@@ -27,6 +27,8 @@ export default function Milestones() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
   const [overCol, setOverCol] = useState<MilestoneStatus | null>(null);
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("newest");
 
   const load = useCallback(async () => {
     try {
@@ -41,6 +43,14 @@ export default function Milestones() {
   }, [notify]);
 
   useEffect(() => { load(); }, [load]);
+
+    const visible = items
+    .filter((m) => `${m.title} ${m.skillTag}`.toLowerCase().includes(search.trim().toLowerCase()))
+    .sort((a, b) => {
+      if (sort === "due") return (a.dueDate ?? "9999").localeCompare(b.dueDate ?? "9999");
+      if (sort === "title") return a.title.localeCompare(b.title);
+      return 0; 
+    });
 
   function openForm(target: Milestone | "new") {
     setErrors({});
@@ -101,12 +111,21 @@ export default function Milestones() {
       <PageHeader title="Milestones Board" subtitle="Drag cards across as you learn." />
       <button className="btn" onClick={() => openForm("new")}>+ Add New Milestone</button>
 
+     <div className="toolbar" style={{ marginTop: 14 }}>
+        <input className="input" type="search" placeholder="Search milestones" aria-label="Search milestones" value={search} onChange={(e) => setSearch(e.target.value)} />
+        <select className="input sort-select" style={{ flex: "0 0 auto" }} aria-label="Sort milestones" value={sort} onChange={(e) => setSort(e.target.value)}>
+          <option value="newest">Newest first</option>
+          <option value="due">Due date</option>
+          <option value="title">Title A–Z</option>
+        </select>
+      </div>
+
       {loading ? (
         <p className="muted" style={{ marginTop: 16 }}>Loading milestones…</p>
       ) : (
         <div className="board">
           {COLUMNS.map((col) => {
-            const cards = items.filter((m) => m.status === col.status);
+            const cards = visible.filter((m) => m.status === col.status);
             return (
               <section
                 key={col.status}

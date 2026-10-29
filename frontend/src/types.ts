@@ -49,6 +49,7 @@ export interface Resource {
   url: string;
   type: ResourceType;
   skillTag: string;
+  createdAt?: string;
 }
 
 export interface ActivityItem {

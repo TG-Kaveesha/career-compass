@@ -213,3 +213,7 @@ button { cursor: pointer; }
 .toast.error { background: var(--pink); }
 .center-screen { min-height: 100vh; display: grid; place-items: center; color: var(--muted); font-weight: 700; }
 
+.details { display: grid; grid-template-columns: 100px 1fr; gap: 10px 14px; margin: 0 0 18px; }
+.details dt { font-weight: 700; color: var(--indigo-900); }
+.details dd { margin: 0; word-break: break-word; }
+.details a { color: var(--primary); text-decoration: underline; }
